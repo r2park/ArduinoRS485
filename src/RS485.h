@@ -20,29 +20,20 @@
 #ifndef _RS485_H_INCLUDED
 #define _RS485_H_INCLUDED
 
-#include <Arduino.h>
+#include "Particle.h"
 
-#ifdef PIN_SERIAL1_TX
-#define RS485_DEFAULT_TX_PIN PIN_SERIAL1_TX
-#else
-#define RS485_DEFAULT_TX_PIN 1 
-#endif
-
-#ifdef __AVR__
-#define RS485_DEFAULT_DE_PIN 2
+// E2000 RS485 transceiver does not use TX and RE pins
+#define RS485_DEFAULT_TX_PIN -1 
 #define RS485_DEFAULT_RE_PIN -1
-#else
-#define RS485_DEFAULT_DE_PIN A6
-#define RS485_DEFAULT_RE_PIN A5
-#endif
 
+#define RS485_DEFAULT_DE_PIN B3
 
 #define RS485_DEFAULT_PRE_DELAY 50
 #define RS485_DEFAULT_POST_DELAY 50
 
 class RS485Class : public Stream {
   public:
-    RS485Class(HardwareSerial& hwSerial, int txPin, int dePin, int rePin);
+    RS485Class(USARTSerial & hwSerial, int txPin, int dePin, int rePin);
 
     virtual void begin(unsigned long baudrate);
     virtual void begin(unsigned long baudrate, uint16_t config);
@@ -70,7 +61,7 @@ class RS485Class : public Stream {
     void setDelays(int predelay, int postdelay);
 
   private:
-    HardwareSerial* _serial;
+    USARTSerial* _serial;
     int _txPin;
     int _dePin;
     int _rePin;

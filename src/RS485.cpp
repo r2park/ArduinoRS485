@@ -19,7 +19,7 @@
 
 #include "RS485.h"
 
-RS485Class::RS485Class(HardwareSerial& hwSerial, int txPin, int dePin, int rePin) :
+RS485Class::RS485Class(USARTSerial & hwSerial, int txPin, int dePin, int rePin) :
   _serial(&hwSerial),
   _txPin(txPin),
   _dePin(dePin),
@@ -186,4 +186,4 @@ void RS485Class::setDelays(int predelay, int postdelay)
   _postdelay = postdelay;
 }
 
-RS485Class RS485(SERIAL_PORT_HARDWARE, RS485_DEFAULT_TX_PIN, RS485_DEFAULT_DE_PIN, RS485_DEFAULT_RE_PIN);
+RS485Class RS485(Serial5, RS485_DEFAULT_TX_PIN, RS485_DEFAULT_DE_PIN, RS485_DEFAULT_RE_PIN);
