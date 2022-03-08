@@ -49,7 +49,7 @@ class RS485Class : public Stream {
     virtual operator bool();
 
     void beginTransmission();
-    void endTransmission();
+    void endTransmission(int reqLen);
     void receive();
     void noReceive();
 

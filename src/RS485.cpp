@@ -104,12 +104,20 @@ void RS485Class::flush()
 
 size_t RS485Class::write(uint8_t b)
 {
+  size_t wc = 0;
+  char buf = 'x';
+
   if (!_transmisionBegun) {
     setWriteError();
     return 0;
   }
 
-  return _serial->write(b);
+  wc = _serial->write(b);
+
+  // Handle echo from E2000 RS-485 Transciever 
+  _serial->readBytes(&buf, 1);
+
+  return wc;
 }
 
 RS485Class::operator bool()
@@ -127,7 +135,7 @@ void RS485Class::beginTransmission()
   _transmisionBegun = true;
 }
 
-void RS485Class::endTransmission()
+void RS485Class::endTransmission(int reqLen)
 {
   _serial->flush();
 
